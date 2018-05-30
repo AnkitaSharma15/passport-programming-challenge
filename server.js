@@ -240,4 +240,4 @@ app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
-http.listen(port, () => console.log(`Listening on port ${port}`));
+http.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}`));
