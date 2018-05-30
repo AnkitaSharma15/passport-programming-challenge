@@ -4,8 +4,11 @@ const app = express();
 const cors = require('cors');
 
 const port = process.env.PORT || 8000;
+var path = require("path");
+
 // our server instance
 
+app.use(express.static(path.join(__dirname, "client/build"))); 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
@@ -36,6 +39,11 @@ db.connect((err) => {
   if (err) throw err;
   console.log('Connected!');
 });
+
+app.get("/", function(req, res) {
+    res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  });
+  
 
 //Configuration
 
