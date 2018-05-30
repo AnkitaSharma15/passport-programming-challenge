@@ -2,11 +2,7 @@
   "name": "passport-programming-challenge",
   "version": "0.1.0",
   "scripts": {
-    "client": "cd client && npm start",
-    "start": "node index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build",
-    "server": "nodemon --exec server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "start": "node index.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
