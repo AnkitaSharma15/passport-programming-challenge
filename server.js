@@ -124,13 +124,13 @@ var getUpdatedData = res =>{
     // console.log(result);
     // res.send(result);
     // db.end();
-    const result = await db.query(selectSql,(err,result)=>{
+    const result = db.query(selectSql,(err,result)=>{
         if (err) throw err;
         let newData = [];
         var count = 0
         result.forEach((data,i) =>{
             var fetchFactoryQuery = "SELECT * from child where parentId = '"+data.id+"'; ";
-            await db.query(fetchFactoryQuery,(err,res1)=>{
+            db.query(fetchFactoryQuery,(err,res1)=>{
                 if (err) throw err;
                 var entry = {
                     ...data,
