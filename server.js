@@ -129,7 +129,7 @@ var getUpdatedData = res =>{
         let newData = [];
         var count = 0
         result.rows.forEach((data,i) =>{
-            var fetchFactoryQuery = "SELECT * from child where parentId = '"+data.id+"'; ";
+            var fetchFactoryQuery = "SELECT * from child where parentId = 1 ; ";
             db.query(fetchFactoryQuery,(err,res1)=>{
                 if (err) throw err;
                 var entry = {
