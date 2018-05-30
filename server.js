@@ -122,6 +122,8 @@ var getUpdatedData = res =>{
     var selectSql = 'SELECT * from factory;';
     const result = db.query(selectSql);
     console.log(result);
+    res.send(result);
+    db.end();
     // const result = await db.query(selectSql,(err,result)=>{
     //     if (err) throw err;
     //     let newData = [];
