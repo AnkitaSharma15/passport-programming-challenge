@@ -8,13 +8,23 @@ var path = require("path");
 
 // our server instance
 
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true
+});
+
+console.log(pool);
+
+
+
 app.use(express.static(path.join(__dirname, "client/build"))); 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 
 
-const mysql = require('mysql');
+// const mysql = require('mysql');
 const bodyParser = require('body-parser');
 app.use(cors());
 
@@ -26,19 +36,30 @@ io.on('connection', function(socket){
     });
   });
 
-//create connection
-const db = mysql.createConnection({
-  host: 'process.env.DATABASE_URL',
-  user: 'root',
-  password: 'root',
-  database: 'tree'
-});
+// //create connection
+// const db = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'root',
+//   database: 'tree'
+// });
+app.get('/db', async (req, res) => {
+    try {
+      const db = await pool.connect()
+      const result = await db.query('SELECT * FROM test_table');
+      res.render('pages/db', result);
+      db.release();
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  });
 
-//Connect
-db.connect((err) => {
-  if (err) throw err;
-  console.log('Connected!');
-});
+// //Connect
+// db.connect((err) => {
+//   if (err) throw err;
+//   console.log('Connected!');
+// });
 
 app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, "client/build", "index.html"));
@@ -59,28 +80,26 @@ app.get("/", function(req, res) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
-app.get('/',(req,res)=>{
-
-})
 
 
-app.get('/api/createfactorytable', (req,res) => {
-    let sql = 'CREATE TABLE factory (id int AUTO_INCREMENT PRIMARY KEY, factoryName varchar(255) NOT NULL,lowerBound int NOT NULL, upperBound int NOT NULL, rangeUpdate bit NOT NULL)';
-    db.query(sql,(err,result)=>{
-        if (err) throw err;
-        console.log(result);
-        res.send('Factory table created');
-    });
-});
 
-app.get('/api/createchildtable', (req,res) => {
-    let sql = 'CREATE TABLE child (child_id int AUTO_INCREMENT PRIMARY KEY, parentId int NOT NULL, nodeValue int NOT NULL, CONSTRAINT FK_Parentid FOREIGN KEY (parentId) REFERENCES factory(id) ON DELETE CASCADE )';
-    db.query(sql,(err,result)=>{
-        if (err) throw err;
-        console.log(result);
-        res.send('Child table created');
-    });
-});
+// app.get('/api/createfactorytable', (req,res) => {
+//     let sql = 'CREATE TABLE factory (id int AUTO_INCREMENT PRIMARY KEY, factoryName varchar(255) NOT NULL,lowerBound int NOT NULL, upperBound int NOT NULL, rangeUpdate bit NOT NULL)';
+//     db.query(sql,(err,result)=>{
+//         if (err) throw err;
+//         console.log(result);
+//         res.send('Factory table created');
+//     });
+// });
+
+// app.get('/api/createchildtable', (req,res) => {
+//     let sql = 'CREATE TABLE child (child_id int AUTO_INCREMENT PRIMARY KEY, parentId int NOT NULL, nodeValue int NOT NULL, CONSTRAINT FK_Parentid FOREIGN KEY (parentId) REFERENCES factory(id) ON DELETE CASCADE )';
+//     db.query(sql,(err,result)=>{
+//         if (err) throw err;
+//         console.log(result);
+//         res.send('Child table created');
+//     });
+// });
 
 
 app.post('/api/addFactory', function (req, res) {
@@ -100,6 +119,9 @@ app.post('/api/addFactory', function (req, res) {
   });
 
 var getUpdatedData = res =>{
+    
+    const db = pool.connect();
+    console.log(db);
     var selectSql = "SELECT * from `factory`";
     db.query(selectSql,(err,result)=>{
         if (err) throw err;
@@ -193,30 +215,33 @@ app.post('/api/addChild', function (req, res) {
 
 app.post('/api/updateFactory', function(req,res){
     let fName = req.body.factoryName;
-    let lower = req.body.lowerBound;
-    let upper = req.body.upperBound;
+    let lower = req.body.lowerRange;
+    let upper = req.body.upperRange;
     let pid = req.body.pId;
-
+    console.log(req.body);
     var selectSql = "SELECT * from `factory` where `id`='"+pid+"'";
     db.query(selectSql,(err,result)=>{
         if (err) throw err;
         let lowerB =  result[0].lowerBound
         let upperB = result[0].upperBound
 
+        console.log(lowerB);
+        console.log(lower)
+
         if(lowerB != lower || upperB != upper){
-            var sql = "DELETE FROM `factory` where `id` = '"+pid+"' ";
+            var sql = "DELETE FROM `child` where `parentId` = '"+pid+"' ";
             db.query(sql,(err,result)=>{
                 if (err) throw err;
-                console.log("deleted");
+                
             });
         }
-        else{
-            var update = "UPDATE factory SET `factoryName` = '"+fName+"' where `id` = '"+pid+"'  ";
-            db.query(update,(err,result)=>{
-                if (err) throw err;
-                console.log("updated");
-            });
-        }
+        
+        var update = "UPDATE factory SET `factoryName` = '"+fName+"' where `id` = '"+pid+"'  ";
+        db.query(update,(err,result)=>{
+            if (err) throw err;
+            console.log("updated");
+        });
+    
        getUpdatedData(res);
         
     });
