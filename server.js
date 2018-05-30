@@ -14,7 +14,7 @@ const pool = new Pool({
   ssl: true
 });
 
-console.log(pool);
+console.log();
 
 
 
@@ -118,9 +118,9 @@ app.post('/api/addFactory', function (req, res) {
     getUpdatedData(res);
   });
 
-var getUpdatedData = res =>{
+var getUpdatedData = async res =>{
     
-    const db = pool.connect();
+    const db = await pool.connect();
     console.log(db);
     var selectSql = "SELECT * from `factory`";
     db.query(selectSql,(err,result)=>{
