@@ -2,7 +2,7 @@
   "name": "passport-programming-challenge",
   "version": "0.1.0",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
