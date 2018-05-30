@@ -120,32 +120,32 @@ var getUpdatedData = res =>{
     
    
     var selectSql = 'SELECT * from factory;';
-    const result = db.query(selectSql);
-    console.log(result);
-    res.send(result);
-    db.end();
-    // const result = await db.query(selectSql,(err,result)=>{
-    //     if (err) throw err;
-    //     let newData = [];
-    //     var count = 0
-    //     result.forEach((data,i) =>{
-    //         var fetchFactoryQuery = "SELECT * from `child` where `parentId` = '"+data.id+"' ";
-    //         await db.query(fetchFactoryQuery,(err,res1)=>{
-    //             if (err) throw err;
-    //             var entry = {
-    //                 ...data,
-    //                 child: res1
-    //             };
-    //             newData.push(entry);
-    //             if(result.length == newData.length){
-    //                 io.emit('message',newData)
-    //                 console.log(newData);
-    //                 res.send(newData);
-    //             }
-    //         });
+    // const result = db.query(selectSql);
+    // console.log(result);
+    // res.send(result);
+    // db.end();
+    const result = await db.query(selectSql,(err,result)=>{
+        if (err) throw err;
+        let newData = [];
+        var count = 0
+        result.forEach((data,i) =>{
+            var fetchFactoryQuery = "SELECT * from child where parentId = '"+data.id+"'; ";
+            await db.query(fetchFactoryQuery,(err,res1)=>{
+                if (err) throw err;
+                var entry = {
+                    ...data,
+                    child: res1
+                };
+                newData.push(entry);
+                if(result.length == newData.length){
+                    io.emit('message',newData)
+                    console.log(newData);
+                    res.send(newData);
+                }
+            });
            
-    //     });
-    // });
+        });
+    });
     
     
     
