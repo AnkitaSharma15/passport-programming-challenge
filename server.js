@@ -28,7 +28,7 @@ io.on('connection', function(socket){
 
 //create connection
 const db = mysql.createConnection({
-  host: 'localhost',
+  host: 'process.env.DATABASE_URL',
   user: 'root',
   password: 'root',
   database: 'tree'
@@ -240,4 +240,4 @@ app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
-http.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}`));
+http.listen(port, () => console.log(`Listening on port ${port}`));
