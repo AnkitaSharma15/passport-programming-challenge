@@ -9,14 +9,12 @@ var path = require("path");
 // our server instance
 
 const { Pool } = require('pg');
-const pool = new Pool({
+const db = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true
 });
 
-console.log();
-
-
+db.connect();
 
 app.use(express.static(path.join(__dirname, "client/build"))); 
 var http = require('http').Server(app);
@@ -118,12 +116,11 @@ app.post('/api/addFactory', function (req, res) {
     getUpdatedData(res);
   });
 
-var getUpdatedData = async res =>{
+var getUpdatedData = res =>{
     
-    const db = await pool.connect();
-    console.log(db);
-    var selectSql = "SELECT * from `factory`";
-    const result = await db.query(selectSql);
+   
+    var selectSql = 'SELECT * from factory;';
+    const result = db.query(selectSql);
     console.log(result);
     // const result = await db.query(selectSql,(err,result)=>{
     //     if (err) throw err;
