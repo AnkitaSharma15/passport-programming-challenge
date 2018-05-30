@@ -128,7 +128,7 @@ var getUpdatedData = res =>{
         if (err) throw err;
         let newData = [];
         var count = 0
-        result.forEach((data,i) =>{
+        result.rows.forEach((data,i) =>{
             var fetchFactoryQuery = "SELECT * from child where parentId = '"+data.id+"'; ";
             db.query(fetchFactoryQuery,(err,res1)=>{
                 if (err) throw err;
