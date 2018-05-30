@@ -2,7 +2,8 @@
   "name": "passport-programming-challenge",
   "version": "0.1.0",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
