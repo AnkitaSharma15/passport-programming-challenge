@@ -123,28 +123,30 @@ var getUpdatedData = async res =>{
     const db = await pool.connect();
     console.log(db);
     var selectSql = "SELECT * from `factory`";
-    db.query(selectSql,(err,result)=>{
-        if (err) throw err;
-        let newData = [];
-        var count = 0
-        result.forEach((data,i) =>{
-            var fetchFactoryQuery = "SELECT * from `child` where `parentId` = '"+data.id+"' ";
-            db.query(fetchFactoryQuery,(err,res1)=>{
-                if (err) throw err;
-                var entry = {
-                    ...data,
-                    child: res1
-                };
-                newData.push(entry);
-                if(result.length == newData.length){
-                    io.emit('message',newData)
-                    console.log(newData);
-                    res.send(newData);
-                }
-            });
+    const result = await db.query(selectSql);
+    console.log(result);
+    // const result = await db.query(selectSql,(err,result)=>{
+    //     if (err) throw err;
+    //     let newData = [];
+    //     var count = 0
+    //     result.forEach((data,i) =>{
+    //         var fetchFactoryQuery = "SELECT * from `child` where `parentId` = '"+data.id+"' ";
+    //         await db.query(fetchFactoryQuery,(err,res1)=>{
+    //             if (err) throw err;
+    //             var entry = {
+    //                 ...data,
+    //                 child: res1
+    //             };
+    //             newData.push(entry);
+    //             if(result.length == newData.length){
+    //                 io.emit('message',newData)
+    //                 console.log(newData);
+    //                 res.send(newData);
+    //             }
+    //         });
            
-        });
-    });
+    //     });
+    // });
     
     
     
