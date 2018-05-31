@@ -132,7 +132,7 @@ var getUpdatedData = res =>{
                 if (err) throw err;
                 var entry = {
                     ...data,
-                    child: res1
+                    child: res1.rows
                 };
                 newData.push(entry);
                 if(result.rows.length == newData.length){
