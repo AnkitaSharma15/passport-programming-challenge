@@ -92,7 +92,7 @@ class ParentFactory extends Component {
             <li key={data.id} >
             <Row >
             <Col xs={1} md={1}>
-              {data.factoryName}
+              {data.factoryname}
               
               <div>
                     <ul className="tree">
@@ -128,7 +128,7 @@ class ParentFactory extends Component {
               </Col>
               <Col xs={2} md={2}>
               
-              <Badge>{data.lowerBound} : {data.upperBound}</Badge>
+              <Badge>{data.lowerbound} : {data.upperbound}</Badge>
              
               </Col>
               </Row>
