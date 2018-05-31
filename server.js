@@ -219,8 +219,8 @@ app.post('/api/updateFactory', function(req,res){
     var selectSql = "SELECT * from factory where id ='"+pid+"'";
     db.query(selectSql,(err,result)=>{
         if (err) throw err;
-        let lowerB =  result[0].lowerbound
-        let upperB = result[0].upperbound
+        let lowerB =  result.rows[0].lowerbound
+        let upperB = result.rows[0].upperbound
 
         console.log(lowerB);
         console.log(lower)
