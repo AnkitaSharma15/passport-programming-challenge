@@ -19,7 +19,7 @@ class ParentFactory extends Component {
           clickedModal: "",
           factoryData: [],
           nodeData: {},
-          endpoint: "https://morning-bastion-28946.herokuapp.com/api"
+          endpoint: "https://morning-bastion-28946.herokuapp.com"
          
           
         };
