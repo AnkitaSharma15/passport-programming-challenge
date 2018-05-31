@@ -163,7 +163,7 @@ app.post('/api/addChild', function (req, res) {
     console.log(a,b,numNodes);
     
             if(numNodes<=15){
-                let del = "DELETE from child where parentid`= '"+pID+"' ";
+                let del = "DELETE from child where parentid = '"+pID+"' ";
                 db.query(del,(err,result)=>{
                     if(err) throw err
                     else{
