@@ -16,6 +16,8 @@ var path = require("path");
 
 // db.connect();
 
+var pg = require('pg');
+
 var pool = new pg.Pool()
 var connString = "postgres://awgymjzjhiyjlf:e76b8860bbc062a6dbe5ef3d4a71c6a1f05ec9a8fcb7a255396d7b1c907a3c21@ec2-107-21-255-2.compute-1.amazonaws.com:5432/d72popi4vn28mq";
 
