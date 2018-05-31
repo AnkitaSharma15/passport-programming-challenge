@@ -135,9 +135,14 @@ app.post('/api/addFactory', function (req, res) {
 var getUpdatedData = res =>{
     
    
-    var selectSql = 'SELECT * from factory;';
-    const result = db.query(selectSql);
-    res.send(result.rows);
+    // var selectSql = 'SELECT * from factory';
+    // const result = db.query(selectSql);
+    // res.send(result.rows);
+    db.query('SELECT * FROM factory', function(err, result) {
+        done();
+        if(err) return console.error(err);
+        res.send(result.rows);
+     });
     // db.end();
     // const result = db.query(selectSql,(err,result)=>{
     //     if (err) throw err;
