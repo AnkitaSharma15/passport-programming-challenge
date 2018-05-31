@@ -39,9 +39,6 @@ export default class ModalContainer extends Component {
 
         >
                 <Modal.Header>
-            <Modal.Title>Modal heading
-                
-            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {this.selectedModal(this.props.currentModal)}

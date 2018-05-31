@@ -120,52 +120,33 @@ app.post('/api/addFactory', function (req, res) {
     });
     getUpdatedData(res);
   });
-//   app.get('/api/addFactory', function(request, response) {
-
-// 	pool.connect(connString, function(err, client, done) {
-// 		if(err) response.send("Could not connect to DB: " + err);
-// 		client.query('SELECT * FROM factory', function(err, result) {
-// 			done();
-// 			if(err) return response.send(err);
-// 			response.send(result.rows);
-// 		});
-// 	});
-// });
 
 var getUpdatedData = res =>{
-    
-   
     // var selectSql = 'SELECT * from factory';
-    // const result = db.query(selectSql);
-    // res.send(result.rows);
     db.query('SELECT * FROM factory', function(err, result) {
         
         if(err) return console.error(err);
-        res.send(result.rows);
+        let newData = [];
+        var count = 0
+        result.rows.forEach((data,i) =>{
+            var fetchFactoryQuery = 'SELECT * from child where parentId = 1';
+            db.query(fetchFactoryQuery,(err,res1)=>{
+                if (err) throw err;
+                var entry = {
+                    ...data,
+                    child: res1
+                };
+                newData.push(entry);
+                if(result.rows.length == newData.length){
+                    io.emit('message',newData)
+                    console.log(newData);
+                    res.send(newData);
+                }
+            });
+        })
+        // res.send(result.rows);
      });
     // db.end();
-    // const result = db.query(selectSql,(err,result)=>{
-    //     if (err) throw err;
-    //     let newData = [];
-    //     var count = 0
-    //     result.rows.forEach((data,i) =>{
-    //         var fetchFactoryQuery = "SELECT * from child where parentId = 1 ; ";
-    //         db.query(fetchFactoryQuery,(err,res1)=>{
-    //             if (err) throw err;
-    //             var entry = {
-    //                 ...data,
-    //                 child: res1
-    //             };
-    //             newData.push(entry);
-    //             if(result.length == newData.length){
-    //                 io.emit('message',newData)
-    //                 console.log(newData);
-    //                 res.send(newData);
-    //             }
-    //         });
-           
-    //     });
-    // }); 
 }
 
 app.get('/api/addFactory', function(req,res){
