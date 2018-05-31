@@ -139,7 +139,7 @@ var getUpdatedData = res =>{
     // const result = db.query(selectSql);
     // res.send(result.rows);
     db.query('SELECT * FROM factory', function(err, result) {
-        done();
+        
         if(err) return console.error(err);
         res.send(result.rows);
      });
