@@ -96,9 +96,9 @@ class ParentFactory extends Component {
               
               <div>
                     <ul className="tree">
-                {data.child.map(cdata => 
+                {data.child.fields.map(cdata => 
                     <li key={cdata.child_id}>
-                    <Col>{cdata.nodeValue}</Col>
+                    <Col>{cdata.nodevalue}</Col>
                     </li>
 
                 )}
