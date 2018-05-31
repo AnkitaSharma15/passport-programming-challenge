@@ -8,18 +8,18 @@ var path = require("path");
 
 // our server instance
 
-// const { Pool } = require('pg');
-// const db = new Pool({
+const { Pool } = require('pg');
+const db = new Pool({
 //   connectionString: process.env.DATABASE_URL,
-//   ssl: true
-// });
+  connectionString:"postgres://awgymjzjhiyjlf:e76b8860bbc062a6dbe5ef3d4a71c6a1f05ec9a8fcb7a255396d7b1c907a3c21@ec2-107-21-255-2.compute-1.amazonaws.com:5432/d72popi4vn28mq",
+  ssl: true
+});
 
-// db.connect();
+db.connect();
 
-var pg = require('pg');
+// var pg = require('pg');
 
-var pool = new pg.Pool()
-var connString = "postgres://awgymjzjhiyjlf:e76b8860bbc062a6dbe5ef3d4a71c6a1f05ec9a8fcb7a255396d7b1c907a3c21@ec2-107-21-255-2.compute-1.amazonaws.com:5432/d72popi4vn28mq";
+// var pool = new pg.Pool()
 
 app.use(express.static(path.join(__dirname, "client/build"))); 
 var http = require('http').Server(app);
@@ -120,62 +120,54 @@ app.post('/api/addFactory', function (req, res) {
     });
     getUpdatedData(res);
   });
-  app.get('/api/addFactory', function(request, response) {
+//   app.get('/api/addFactory', function(request, response) {
 
-	pool.connect(connString, function(err, client, done) {
-		if(err) response.send("Could not connect to DB: " + err);
-		client.query('SELECT * FROM factory', function(err, result) {
-			done();
-			if(err) return response.send(err);
-			response.send(result.rows);
-		});
-	});
-});
+// 	pool.connect(connString, function(err, client, done) {
+// 		if(err) response.send("Could not connect to DB: " + err);
+// 		client.query('SELECT * FROM factory', function(err, result) {
+// 			done();
+// 			if(err) return response.send(err);
+// 			response.send(result.rows);
+// 		});
+// 	});
+// });
 
-// var getUpdatedData = res =>{
+var getUpdatedData = res =>{
     
    
-//     var selectSql = 'SELECT * from factory;';
-//     // const result = db.query(selectSql);
-//     // console.log(result);
-//     // res.send(result);
-//     // db.end();
-//     pg.connect(connString, function(err,client,done){
-//         if(err) response.send("Could not connect to DB: " + err);
-//         client.query('SELECT * FROM factory')
-//     })
-//     const result = db.query(selectSql,(err,result)=>{
-//         if (err) throw err;
-//         let newData = [];
-//         var count = 0
-//         result.rows.forEach((data,i) =>{
-//             var fetchFactoryQuery = "SELECT * from child where parentId = 1 ; ";
-//             db.query(fetchFactoryQuery,(err,res1)=>{
-//                 if (err) throw err;
-//                 var entry = {
-//                     ...data,
-//                     child: res1
-//                 };
-//                 newData.push(entry);
-//                 if(result.length == newData.length){
-//                     io.emit('message',newData)
-//                     console.log(newData);
-//                     res.send(newData);
-//                 }
-//             });
+    var selectSql = 'SELECT * from factory;';
+    const result = db.query(selectSql);
+    res.send(result.rows);
+    // db.end();
+    // const result = db.query(selectSql,(err,result)=>{
+    //     if (err) throw err;
+    //     let newData = [];
+    //     var count = 0
+    //     result.rows.forEach((data,i) =>{
+    //         var fetchFactoryQuery = "SELECT * from child where parentId = 1 ; ";
+    //         db.query(fetchFactoryQuery,(err,res1)=>{
+    //             if (err) throw err;
+    //             var entry = {
+    //                 ...data,
+    //                 child: res1
+    //             };
+    //             newData.push(entry);
+    //             if(result.length == newData.length){
+    //                 io.emit('message',newData)
+    //                 console.log(newData);
+    //                 res.send(newData);
+    //             }
+    //         });
            
-//         });
-//     });
-    
-    
-    
-// }
+    //     });
+    // }); 
+}
 
-// app.get('/api/addFactory', function(req,res){
+app.get('/api/addFactory', function(req,res){
     
-//     getUpdatedData(res);
+    getUpdatedData(res);
     
-// })
+})
 app.post('/api/addChild', function (req, res) {
     console.log(req.body);
     
