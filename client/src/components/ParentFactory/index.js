@@ -19,7 +19,7 @@ class ParentFactory extends Component {
           clickedModal: "",
           factoryData: [],
           nodeData: {},
-          endpoint: "http://localhost:8000"
+          endpoint: "https://morning-bastion-28946.herokuapp.com/api"
          
           
         };
@@ -34,7 +34,7 @@ class ParentFactory extends Component {
         
       }
       componentWillMount() {
-        axios.get(`http://localhost:8000/api/addFactory`).then(res => {
+        axios.get(`https://morning-bastion-28946.herokuapp.com/api/addFactory`).then(res => {
           const factoryData = res.data;
           this.setState(
             { factoryData },()=>localStorage.setItem("parentdata", JSON.stringify(factoryData))
@@ -59,7 +59,7 @@ class ParentFactory extends Component {
         e.preventDefault();
         let self =this;
         alert("deleted child nodes");
-        var apiBaseUrl = "http://localhost:8000/api/";
+        var apiBaseUrl = "https://morning-bastion-28946.herokuapp.com/api/";
         var payload={
         "id": pid
         }
@@ -77,10 +77,6 @@ class ParentFactory extends Component {
         });
       }
 
-      
-     
-    
-      
     render() {
       let dataFactory = JSON.parse(localStorage.getItem("parentdata"));
       console.log(dataFactory);
