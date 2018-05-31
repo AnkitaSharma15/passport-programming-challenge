@@ -1,12 +1,10 @@
 const express = require('express');
-
 const app = express();
 const cors = require('cors');
-
 const port = process.env.PORT || 8000;
 var path = require("path");
 
-// our server instance
+// db configuration
 
 const { Pool } = require('pg');
 const db = new Pool({
@@ -17,17 +15,15 @@ const db = new Pool({
 
 db.connect();
 
-// var pg = require('pg');
 
-// var pool = new pg.Pool()
 
 app.use(express.static(path.join(__dirname, "client/build"))); 
+
+//socket.io server instance
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 
-
-// const mysql = require('mysql');
 const bodyParser = require('body-parser');
 app.use(cors());
 
@@ -39,71 +35,16 @@ io.on('connection', function(socket){
     });
   });
 
-// //create connection
-// const db = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'root',
-//   database: 'tree'
-// });
-app.get('/db', async (req, res) => {
-    try {
-      const db = await pool.connect()
-      const result = await db.query('SELECT * FROM test_table');
-      res.render('pages/db', result);
-      db.release();
-    } catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  });
-
-// //Connect
-// db.connect((err) => {
-//   if (err) throw err;
-//   console.log('Connected!');
-// });
 
 app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, "client/build", "index.html"));
   });
   
-
-//Configuration
-
-// app.get('/createdb', (req,res) => {
-//     let sql = 'CREATE DATABASE Tree';
-//     db.query(sql,(err,result)=>{
-//         if (err) throw err;
-//         console.log(result);
-//         res.send('Database tree created');
-//     });
-// });
-// app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
 
-
-
-// app.get('/api/createfactorytable', (req,res) => {
-//     let sql = 'CREATE TABLE factory (id int AUTO_INCREMENT PRIMARY KEY, factoryName varchar(255) NOT NULL,lowerBound int NOT NULL, upperBound int NOT NULL, rangeUpdate bit NOT NULL)';
-//     db.query(sql,(err,result)=>{
-//         if (err) throw err;
-//         console.log(result);
-//         res.send('Factory table created');
-//     });
-// });
-
-// app.get('/api/createchildtable', (req,res) => {
-//     let sql = 'CREATE TABLE child (child_id int AUTO_INCREMENT PRIMARY KEY, parentId int NOT NULL, nodeValue int NOT NULL, CONSTRAINT FK_Parentid FOREIGN KEY (parentId) REFERENCES factory(id) ON DELETE CASCADE )';
-//     db.query(sql,(err,result)=>{
-//         if (err) throw err;
-//         console.log(result);
-//         res.send('Child table created');
-//     });
-// });
-
+//Post addFactory endpoint
 
 app.post('/api/addFactory', function (req, res) {
     console.log(req.body);
@@ -119,6 +60,8 @@ app.post('/api/addFactory', function (req, res) {
     });
     getUpdatedData(res);
   });
+
+
 
 var getUpdatedData = res =>{
     db.query('SELECT * FROM factory', function(err, result) {
@@ -144,14 +87,17 @@ var getUpdatedData = res =>{
         })
         
      });
-    // db.end();
 }
+
+// GET addFactory 
 
 app.get('/api/addFactory', function(req,res){
     
     getUpdatedData(res);
     
 })
+
+// Post addChild
 app.post('/api/addChild', function (req, res) {
     console.log(req.body);
     
@@ -188,16 +134,10 @@ app.post('/api/addChild', function (req, res) {
         else{
             res.send("exceeded 15 nodes");
         }
-        
-        
-    
-        
-  
-
   });
 
   
-
+// Get child data of particular parent with parent id
   app.get('/api/addChild/:parentid', function(req,res){
 
     let id = req.params.parentid;
@@ -210,6 +150,7 @@ app.post('/api/addChild', function (req, res) {
     
 });
 
+//updateFactory
 app.post('/api/updateFactory', function(req,res){
     let fName = req.body.factoryName;
     let lower = req.body.lowerRange;
@@ -244,6 +185,7 @@ app.post('/api/updateFactory', function(req,res){
     });
 });
 
+//deleteFactory
 app.post('/api/deleteFactory', function (req, res) {
     let pid = req.body.id;
     console.log(pid);
@@ -256,7 +198,7 @@ app.post('/api/deleteFactory', function (req, res) {
     });
  });
 
-
+//test api
 
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });

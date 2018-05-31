@@ -43,7 +43,7 @@ class CreateChildFactory extends Component{
       });
     }
     else{
-      alert("max limit 15 for no. of nodes only");
+      alert("Child nodes can be generated only upto 15 !!");
     }
    
     }
@@ -55,7 +55,7 @@ class CreateChildFactory extends Component{
     return(
       <div>
             <Form horizontal>
-              <FormGroup controlId="formHorizontalEmail">
+              <FormGroup controlId="formHorizontalChild">
                 <Col  sm={2}>
                   No. of Child Nodes
                  
