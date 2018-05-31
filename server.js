@@ -16,7 +16,7 @@ var path = require("path");
 
 // db.connect();
 
-var pg = require('pg');
+var pool = new pg.Pool()
 var connString = "postgres://awgymjzjhiyjlf:e76b8860bbc062a6dbe5ef3d4a71c6a1f05ec9a8fcb7a255396d7b1c907a3c21@ec2-107-21-255-2.compute-1.amazonaws.com:5432/d72popi4vn28mq";
 
 app.use(express.static(path.join(__dirname, "client/build"))); 
@@ -120,7 +120,7 @@ app.post('/api/addFactory', function (req, res) {
   });
   app.get('/api/addFactory', function(request, response) {
 
-	pg.connect(connString, function(err, client, done) {
+	pool.connect(connString, function(err, client, done) {
 		if(err) response.send("Could not connect to DB: " + err);
 		client.query('SELECT * FROM factory', function(err, result) {
 			done();
