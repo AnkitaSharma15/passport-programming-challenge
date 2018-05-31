@@ -24,7 +24,7 @@ class ParentFactory extends Component {
           
         };
         console.log(this.state);
-        const socket = socketIOClient(this.state.endpoint);
+        const socket = socketIOClient();
         socket.on('message',data => {
           console.log("New data:",data);
           self.setState({
