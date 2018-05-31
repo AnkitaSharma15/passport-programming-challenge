@@ -4,7 +4,7 @@ import RootNode from "../RootNode/index";
 
 
 
-const NavBar = ({handleTest})=>(
+const NavBar = ()=>(
 <Navbar>
   <Navbar.Header>
     <Navbar.Brand>
@@ -16,7 +16,7 @@ const NavBar = ({handleTest})=>(
     <Nav>
      
       <NavItem>
-        <RootNode handleTest = {handleTest}/>
+        <RootNode/>
         </NavItem>
      
     </Nav>

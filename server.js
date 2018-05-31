@@ -112,17 +112,15 @@ app.post('/api/addFactory', function (req, res) {
     let ubound = req.body.upperRange;
     console.log(fname);
     
-    var sql = "INSERT INTO `factory` (`factoryName`, `lowerBound`, `upperBound`, `rangeUpdate`) VALUES ('"+fname+"','"+lbound+"','"+ubound+"',0)";
+    var sql = "INSERT INTO factory (factoryname, lowerbound, upperbound) VALUES ('"+fname+"','"+lbound+"','"+ubound+"')";
     
     db.query(sql,(err,result)=>{
         if (err) throw err;
-        
     });
     getUpdatedData(res);
   });
 
 var getUpdatedData = res =>{
-    // var selectSql = 'SELECT * from factory';
     db.query('SELECT * FROM factory', function(err, result) {
         
         if(err) return console.error(err);
@@ -144,7 +142,7 @@ var getUpdatedData = res =>{
                 }
             });
         })
-        // res.send(result.rows);
+        
      });
     // db.end();
 }
@@ -165,7 +163,7 @@ app.post('/api/addChild', function (req, res) {
     console.log(a,b,numNodes);
     
             if(numNodes<=15){
-                let del = "DELETE from `child` where `parentId`= '"+pID+"' ";
+                let del = "DELETE from child where parentid`= '"+pID+"' ";
                 db.query(del,(err,result)=>{
                     if(err) throw err
                     else{
@@ -173,7 +171,7 @@ app.post('/api/addChild', function (req, res) {
                         for (var i = 0; i<numNodes; i++){
                             nodeValue = Math.floor(Math.random() * ((b - a) + 1)) + a;
                             console.log(nodeValue);
-                                let q = "INSERT INTO `child` (`parentId`, `nodeValue`) VALUES ('"+pID+"','"+nodeValue+"')";
+                                let q = "INSERT INTO child (parentid, nodevalue) VALUES ('"+pID+"','"+nodeValue+"')";
                                 data=[]
                                 db.query(q,(err,result)=>{
                                     if(err) throw err
@@ -200,14 +198,14 @@ app.post('/api/addChild', function (req, res) {
 
   
 
-  app.get('/api/addChild/:parentId', function(req,res){
+  app.get('/api/addChild/:parentid', function(req,res){
 
-    let id = req.params.parentId;
+    let id = req.params.parentid;
     console.log(id);
-    var sql = "SELECT * from `child` where `parentId` = '"+id+"' ";
+    var sql = "SELECT * from child where parentid = '"+id+"' ";
     db.query(sql,(err,result)=>{
         if (err) throw err;
-        res.send(result);
+        res.send(result.rows);
     });
     
 });
@@ -218,24 +216,24 @@ app.post('/api/updateFactory', function(req,res){
     let upper = req.body.upperRange;
     let pid = req.body.pId;
     console.log(req.body);
-    var selectSql = "SELECT * from `factory` where `id`='"+pid+"'";
+    var selectSql = "SELECT * from factory where id ='"+pid+"'";
     db.query(selectSql,(err,result)=>{
         if (err) throw err;
-        let lowerB =  result[0].lowerBound
-        let upperB = result[0].upperBound
+        let lowerB =  result[0].lowerbound
+        let upperB = result[0].upperbound
 
         console.log(lowerB);
         console.log(lower)
 
         if(lowerB != lower || upperB != upper){
-            var sql = "DELETE FROM `child` where `parentId` = '"+pid+"' ";
+            var sql = "DELETE FROM child where parentid = '"+pid+"' ";
             db.query(sql,(err,result)=>{
                 if (err) throw err;
                 
             });
         }
         
-        var update = "UPDATE factory SET `factoryName` = '"+fName+"' where `id` = '"+pid+"'  ";
+        var update = "UPDATE factory SET factoryName = '"+fName+"' where id = '"+pid+"'  ";
         db.query(update,(err,result)=>{
             if (err) throw err;
             console.log("updated");
@@ -249,7 +247,7 @@ app.post('/api/updateFactory', function(req,res){
 app.post('/api/deleteFactory', function (req, res) {
     let pid = req.body.id;
     console.log(pid);
-    var sql = "DELETE FROM `factory` where `id` = '"+pid+"' ";
+    var sql = "DELETE FROM factory where id = '"+pid+"' ";
     db.query(sql,(err,result)=>{
         if (err) throw err
         else{

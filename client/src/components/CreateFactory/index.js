@@ -21,7 +21,7 @@ class CreateFactory extends Component{
     let self = this;
     event.preventDefault();
     
-      var apiBaseUrl = "http://localhost:8000/api/";
+      var apiBaseUrl = "https://morning-bastion-28946.herokuapp.com/api/";
       var payload={
       "factoryName":this.state.factoryName,
       "lowerRange":this.state.lowerRange,

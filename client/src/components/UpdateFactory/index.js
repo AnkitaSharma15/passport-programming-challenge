@@ -7,9 +7,9 @@ export default class UpdateFactory extends Component{
     super(props);
 
     this.state = {
-      factoryName: this.props.pData.factoryName,
-      lowerRange: this.props.pData.lowerBound,
-      upperRange: this.props.pData.upperBound
+      factoryName: this.props.pData.factoryname,
+      lowerRange: this.props.pData.lowerbound,
+      upperRange: this.props.pData.upperbound
     }
   }
   handleInputChange =(e,name) =>{
@@ -21,7 +21,7 @@ export default class UpdateFactory extends Component{
     let self = this;
     event.preventDefault();
     
-    var apiBaseUrl = "http://localhost:8000/api/";
+    var apiBaseUrl = "https://morning-bastion-28946.herokuapp.com/api/";
     var payload={
     "factoryName":this.state.factoryName,
     "lowerRange":this.state.lowerRange,

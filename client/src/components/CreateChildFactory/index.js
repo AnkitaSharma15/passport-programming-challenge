@@ -8,8 +8,8 @@ class CreateChildFactory extends Component{
 
     this.state ={
       count: 0,
-      min: this.props.pData.lowerBound,
-      max: this.props.pData.upperBound,
+      min: this.props.pData.lowerbound,
+      max: this.props.pData.upperbound,
       
     }
     
@@ -25,7 +25,7 @@ class CreateChildFactory extends Component{
       console.log(this.state.childValue);
       e.preventDefault();
       alert("added child nodes");
-      var apiBaseUrl = "http://localhost:8000/api/";
+      var apiBaseUrl = "https://morning-bastion-28946.herokuapp.com/api/";
       var payload={
       "count":this.state.count,
       "pId": this.props.pData.id,

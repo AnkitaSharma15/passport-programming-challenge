@@ -28,7 +28,7 @@ export default class RootNode extends Component {
 <Button onClick={this.handleShow}>
                Create Factory
               </Button> 
-            <ModalContainer show={this.state.show} onHide={this.handleClose} currentModal = "CREATE_FACTORY" handleTest = {this.props.handleTest}/>
+            <ModalContainer show={this.state.show} onHide={this.handleClose} currentModal = "CREATE_FACTORY" />
             </div>
         )
     }
