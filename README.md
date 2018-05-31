@@ -1,7 +1,7 @@
 # passport-programming-challenge
 
 
-# FRONT END TECHNOLOGY:
+#FRONT END TECHNOLOGY:
 -> REACT 
 
 #BACKEND TECHNOLOGY:
@@ -28,5 +28,10 @@
 -> All   users   should   see   any   changes   made   to the   tree   immediately   across   browsers without   refreshing   or   polling. (used socket.io)
 
 -> On generation of child nodes and in edit, if user updates either of range then all   of  factory’s   existing   child   nodes   should be   removed.
+
+
+#Project Structure:
+-> 'client' folder includes all front end source code in React.
+-> 'server.js' includes all end points and database configuration using Express JS.
 
 
